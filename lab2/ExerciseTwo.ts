@@ -44,6 +44,7 @@ class TaskList implements TaskManager {
         const index = this.tasks.indexOf(task);
         if (index > -1) {
             // Removes the task from the array by removing its index
+            // deleteCount is set to 1 to remove only the first instance of the task
             this.tasks.splice(index, 1);
             // Printing a message to the console indicating deletion
             console.log(`Task "${task}" removed from the list.\n`);
