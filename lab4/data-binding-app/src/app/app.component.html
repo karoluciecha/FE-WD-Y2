@@ -1,0 +1,19 @@
+<p>Hello {{title}}</p>
+
+<!-- Double click the image to show/hide the text below -->
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Red_star.svg" height="42" width="42" (dblclick)="onImageDblClick()">
+<br>
+
+<!-- Property hidden is bound to the variable hide -->
+<h2 [hidden]="hide">Look at the star</h2>
+<br>
+
+<!-- Click the button to see the number of times it has been pressed -->
+<button (click)="onButtonClick()">Press Me</button>
+<br>
+<br>
+<h1>The number of times the button has been pressed is: {{numberClicks}}</h1>
+<br>
+
+<!-- Adding a list of presidents component -->
+<app-listcomponent></app-listcomponent>

@@ -1,0 +1,20 @@
+<h2>List of U.S. Presidents</h2>
+
+<!-- Using *ngFor: Traditional Angular way to loop through an array -->
+ <h4>Using <code>*ngFor</code></h4>
+<ul>
+    <li *ngFor="let president of presidents">
+        {{ president.name }} ({{ president.term }}) 
+        <!-- Loops through 'presidents' array and displays each name and term -->
+    </li>
+</ul>
+
+<!-- Using @for: New Angular 17+ Control Flow Syntax -->
+<h4>Using <code>{{ '@for' }}</code></h4>
+<ol>
+    @for (pres of presidents; track pres) {
+        <li>{{ pres.name }} ({{ pres.term }})</li>
+        <!-- @for works similarly to *ngFor but is part of the new syntax -->
+        <!-- 'track pres' helps Angular track elements efficiently for better performance -->
+    }
+</ol>
