@@ -1,0 +1,21 @@
+<!-- Displaying data from data.service -->
+<h1>Student Data</h1>
+<ul>
+  <li *ngFor="let x of students">
+    {{x.id}}: Name: {{x.name}}, Age: {{x.age}}, Address: {{x.address}}, Course: {{x.course}}
+  </li>
+</ul>
+
+<ol>
+  @for(student of students; track student) {
+    <li>{{student.id}}:<br>Name: {{student.name}}, Age: {{student.age}}, Address: {{student.address}}, Course: {{student.course}}</li><br>
+  }
+</ol>
+<hr>
+<!-- Displaying data from weather.service -->
+<h1>Weather Data</h1>
+<!-- @for gets rid of an error when interface tries to load data while its still loading -->
+@for(w of weatherConditions; track w) {
+  <p>{{weatherConditions[0].main}}, {{weatherConditions[0].description}}</p>
+}
+<p>Temperature: {{weatherTemperature[0]}} | Feels like: {{weatherTemperature[1]}}</p>
