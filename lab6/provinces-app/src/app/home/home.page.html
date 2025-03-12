@@ -1,0 +1,26 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Provinces in Ireland
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Blank</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container">
+    <ul>
+      <!-- [[routerLink]="['/ulster']"] is a directive that tells the router to navigate to the ulster page when the user clicks on the list item.
+      Basically an alternative to using (click)="" -->
+      <li [routerLink]="['/ulster']">Ulster</li>
+      <li [routerLink]="['/muster']">Munster</li>
+      <li [routerLink]="['/connaught']">Connaught</li>
+      <li [routerLink]="['/leinster']">Leinster</li>
+    </ul>
+  </div>
+</ion-content>

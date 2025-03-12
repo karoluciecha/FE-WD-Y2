@@ -1,0 +1,20 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Counties in Leinster</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">counties</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <h1 style="text-align: center;">Counties in Leinster</h1>
+  <ul>
+    <li *ngFor="let county of counties">{{county}}</li>
+  </ul>
+</ion-content>
