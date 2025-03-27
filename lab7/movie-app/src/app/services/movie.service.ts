@@ -10,7 +10,7 @@ export class MovieService {
   // API key for the OMDB API
   // This key is used to authenticate requests to the OMDB API
   private apiKey = '11fa1dcb';
-  private apiUrl = `http://www.omdbapi.com/?apikey=${this.apiKey}&s=war`;
+  private apiUrl = `https://www.omdbapi.com/?apikey=${this.apiKey}&s=war`;
 
   // Inject the HttpClient service into the constructor
   // This will allow us to make HTTP requests to the OMDB API
