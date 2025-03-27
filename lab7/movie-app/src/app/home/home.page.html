@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      War Movies
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="false" class="ion-padding">
+  <ion-header collapse="condense" slot="fixed">
+    <ion-toolbar>
+      <ion-title size="large">War Movies</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="movie-grid">
+    <!-- Loop through the movies array and display the movie poster, title, and year -->
+    <ion-card *ngFor="let movie of movies">
+      <!-- If the movie poster is not available, display a placeholder image -->
+      <img [src]="movie.Poster !== 'N/A' ? movie.Poster : 'assets/placeholder.jpg'" alt="Movie Poster" />
+      <ion-card-content>
+        <h2 style="font-weight: bold; text-transform: uppercase;">{{ movie.Title }}</h2>
+        <h3>{{ movie.Year }}</h3>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
