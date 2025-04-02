@@ -1,0 +1,21 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Status App
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+<ion-title size="large" class="ion-text-center">
+  <h1>Welcome to the Status App</h1>
+  <h2>Click the button below to check your status</h2>
+</ion-title>
+
+<ion-button [routerLink]="['/status']">Update Status</ion-button>
+<p *ngIf="status" class="ion-text-center">
+  <strong>Status:</strong> {{ status }}
+</p>
+</div>
+</ion-content>

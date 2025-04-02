@@ -1,0 +1,76 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-back-button defaultHref="/home" slot="start"></ion-back-button>
+    <ion-title>Set Status</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- List of status options with radio buttons -->
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">status</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div style="text-align: center;">
+  <ion-list>
+    <ion-radio-group [(ngModel)]="status">
+    <ion-item>
+      <ion-radio value="Online">
+      <ion-label>Online</ion-label>
+    </ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-radio value="Offline">
+      <ion-label>Offline</ion-label>
+    </ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-radio  value="Busy">
+      <ion-label>Busy</ion-label>
+    </ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-radio  value="Do Not Disturb">
+      <ion-label>Do Not Disturb</ion-label>
+    </ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-radio value="Invisible">
+      <ion-label>Invisible</ion-label>
+    </ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-radio value="Away">
+      <ion-label>Away</ion-label>
+    </ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-radio value="Be Right Back">
+      <ion-label>Be Right Back</ion-label>
+    </ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-radio value="Out to Lunch">
+      <ion-label>Out to Lunch</ion-label>
+    </ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-radio value="On Vacation">
+      <ion-label>On Vacation</ion-label>
+    </ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-radio value="In a Meeting">
+      <ion-label>In a Meeting</ion-label>
+    </ion-radio>
+    </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <!-- Button to save the selected status -->
+  <ion-button (click)="saveStatus()">Save Status</ion-button>
+  <!-- Button to reset the status -->
+  <ion-button (click)="clearStatus()">Clear Status</ion-button>
+  </div>
+</ion-content>
