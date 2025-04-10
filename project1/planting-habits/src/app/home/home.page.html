@@ -1,0 +1,96 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Planting Habits
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Welcome</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <h1 style="text-align: center;">
+    {{ username ? 'Hello, ' + username + '!' : 'Welcome to Planting Habits!' }}
+  </h1>
+  <hr>
+
+  <div
+  style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto; padding: 0 2rem; max-width: 800px; min-height: 80px;">
+  <blockquote style="font-style: italic; margin: 0;">
+    {{ quote }}
+  </blockquote>
+</div>
+
+  <hr>
+
+  <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+  <!-- Main container toggle -->
+  <ng-container *ngIf="showSettings; else mainMenu">
+    <!-- Settings View -->
+    <ion-card style="width: 100%; max-width: 500px; height: 350px; display: flex; flex-direction: column;">
+      <ion-card-header>
+        <ion-card-title style="text-align: center;">Settings</ion-card-title>
+      </ion-card-header>
+      <ion-card-content style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+        <!-- Top part -->
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;">
+          <p>
+            <ng-container *ngIf="!isLoggedIn">
+              User is logged out :(
+            </ng-container>
+            <ng-container *ngIf="isLoggedIn">
+              Currently logged in as <strong>{{ username }}</strong> :)
+            </ng-container>
+          </p>
+          <div *ngIf="!isLoggedIn">
+            <div style="max-width: 250px; margin: 0 auto;">
+              <ion-input
+                placeholder="Enter your name"
+                [(ngModel)]="inputName"
+                maxlength="25"
+                style="--padding-start: 10px; --padding-end: 10px; border-radius: 6px;"
+              ></ion-input>
+            </div>
+            <ion-button (click)="login()" [disabled]="!inputName.trim() || inputName.length > 25" style="margin-top: 1rem;">Log In</ion-button>
+          </div>
+          <div *ngIf="isLoggedIn">
+            <ion-button color="danger" style="margin-top: 1rem;" (click)="logout()">Log Out</ion-button>
+          </div>
+        </div>
+        <!-- Bottom part: Dark mode toggle + Back button -->
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; padding-top: 1rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0;">
+            <ion-label>Dark Mode</ion-label>
+            <ion-toggle [checked]="isDarkMode" (ionChange)="toggleTheme($event)"></ion-toggle>
+          </div>
+          <ion-button fill="outline" (click)="showSettings = false">
+            Back
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <!-- RouterLinks Menu -->
+  <ng-template #mainMenu>
+    <ion-card style="width: 100%; max-width: 500px; height: 350px; display: flex; flex-direction: column;">
+      <ion-card-header>
+        <ion-card-title style="text-align: center;">Main Menu</ion-card-title>
+      </ion-card-header>
+      <ion-card-content style="flex: 1; display: flex; justify-content: center;">
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem;">
+          <ion-button [routerLink]="['/track']" [disabled]="!isLoggedIn">Track Now</ion-button>
+          <ion-button [routerLink]="['/garden']" [disabled]="!isLoggedIn">Garden View</ion-button>
+          <ion-button [routerLink]="['/calendar']" [disabled]="!isLoggedIn">Calendar View</ion-button>
+          <ion-button [routerLink]="['/edit']" [disabled]="!isLoggedIn">Edit Habits</ion-button>
+          <ion-button (click)="showSettings = true">Settings</ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</div>
+</ion-content>

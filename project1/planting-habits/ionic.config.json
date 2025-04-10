@@ -1,0 +1,7 @@
+{
+  "name": "planting-habits",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
