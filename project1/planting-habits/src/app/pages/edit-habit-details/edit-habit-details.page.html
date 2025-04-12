@@ -1,0 +1,61 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Edit Habit Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="primary" (click)="saveHabit()">Save</ion-button>
+      <ion-button color="danger" (click)="deleteHabit()">Delete</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="form-wrapper">
+<!-- Habit Name -->
+<div class="form-row styled-input">
+  <ion-label>Habit Name</ion-label>
+  <ion-input [(ngModel)]="habitName" name="habitName" [disabled]="isEditing" style="text-align: center;"></ion-input>
+</div>
+
+<!-- Habit Description -->
+<div class="form-row styled-input">
+  <ion-label>Habit Description</ion-label>
+  <ion-textarea [(ngModel)]="habitDescription" name="habitDescription" style="text-align: center;"></ion-textarea>
+</div>
+
+<!-- Frequency -->
+<ion-item class="form-row styled-input" style="cursor: default;">
+  <ion-label>Frequency</ion-label>
+  <ion-select [(ngModel)]="frequency" name="frequency" interface="popover" placeholder="Select frequency">
+    <ion-select-option *ngFor="let f of frequencies" [value]="f">{{ f }}</ion-select-option>
+  </ion-select>
+</ion-item>
+
+
+<!-- Level + Slider -->
+<ion-item class="form-row level-slider styled-input">
+  <ion-label style="margin-right: 1rem;">Level: {{ level }}</ion-label>
+  <ion-range
+    [min]="isEditing ? initialLevel : 1"
+    max="10"
+    snaps="true"
+    ticks="true"
+    [(ngModel)]="level"
+    name="level">
+  </ion-range>
+</ion-item>
+
+
+    <div style="display: flex; flex-direction: column; align-items: center; background-color: rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 1rem 1rem 0 1rem; margin-top: 1rem; width: 100%; max-width: 400px;">
+      <ion-label style="margin-bottom: 0.5rem;">Start Date</ion-label>
+      <ion-datetime
+        [(ngModel)]="startDate"
+        [disabled]="isEditing"
+        [min]="minDate"
+        [max]="maxDate"
+        presentation="date"
+        name="startDate"
+        style="max-width: 400px; width: 100%; background-color: rgba(255, 255, 255, 0.0);">
+      </ion-datetime>
+    </div>
+  </div>
+</ion-content>

@@ -13,6 +13,14 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { importProvidersFrom, isDevMode } from '@angular/core';
 import { provideServiceWorker } from '@angular/service-worker';
 
+// Import the necessary icons from Ionicons
+import { addIcons } from 'ionicons';
+import { addOutline } from 'ionicons/icons';
+
+// Register only the icons needed
+addIcons({
+  'add-outline': addOutline,
+});
 
 bootstrapApplication(AppComponent, {
   providers: [
