@@ -15,11 +15,14 @@ import { provideServiceWorker } from '@angular/service-worker';
 
 // Import the necessary icons from Ionicons
 import { addIcons } from 'ionicons';
-import { addOutline } from 'ionicons/icons';
+import { addOutline, settingsOutline, saveOutline, trashOutline } from 'ionicons/icons';
 
 // Register only the icons needed
 addIcons({
   'add-outline': addOutline,
+  'settings-outline': settingsOutline,
+  'save-outline': saveOutline,
+  'trash-outline': trashOutline,
 });
 
 bootstrapApplication(AppComponent, {

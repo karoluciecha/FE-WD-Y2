@@ -113,6 +113,9 @@ export class EditHabitDetailsPage implements OnInit {
     const key = `habits_${username}`;
     let storedHabits: any[] = (await this.storageService.get(key)) || [];
   
+    const goalMap = [1, 5, 10, 25, 50, 69, 100, 250, 500, 1000];
+    const goalCount = goalMap[this.level - 1];
+
     if (this.habitId) {
       // Editing existing habit — update it
       const index = storedHabits.findIndex(h => String(h.id) === String(this.habitId));
@@ -123,6 +126,7 @@ export class EditHabitDetailsPage implements OnInit {
           description: this.habitDescription,
           frequency: this.frequency,
           level: this.level,
+          goalCount,
           startDate: this.startDate,
           active: true
         };
@@ -135,7 +139,11 @@ export class EditHabitDetailsPage implements OnInit {
         description: this.habitDescription,
         frequency: this.frequency,
         level: this.level,
+        goalCount,
         startDate: this.startDate,
+        logCount: 0,
+        currentLevel: 0,
+        lastLogged: null,
         active: true
       };
       storedHabits.push(newHabit);

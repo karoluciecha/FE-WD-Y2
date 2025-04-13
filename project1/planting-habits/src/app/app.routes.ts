@@ -21,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'edit-habit-details/:id',
     loadComponent: () => import('./pages/edit-habit-details/edit-habit-details.page').then(m => m.EditHabitDetailsPage)
-  }, 
+  },   {
+    path: 'track-habit-all',
+    loadComponent: () => import('./pages/track-habit-all/track-habit-all.page').then( m => m.TrackHabitAllPage)
+  },
+
 ];

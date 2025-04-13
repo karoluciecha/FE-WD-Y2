@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button routerLink="/" defaultHref="/" routerDirection="root"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Current Habits</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Daily Progress Bar -->
+  <div *ngIf="todayHabits.length > 0" style="margin-bottom: 1rem;">
+    <ion-label>
+      Daily Progress: {{ completedCount }} of {{ todayHabits.length }}
+    </ion-label>
+    <ion-progress-bar [value]="completedCount / todayHabits.length"></ion-progress-bar>
+  </div>
+
+    <!-- Habit Checklist -->
+    <ion-list>
+      <ion-item *ngFor="let habit of todayHabits">
+        <ion-checkbox
+          slot="start"
+          [checked]="habit.checkedToday"
+          [disabled]="habit.checkedToday || habit.levelReached"
+          (ionChange)="onHabitCheck(habit)">
+        </ion-checkbox>
+  
+        <ion-label>
+          <h2>{{ habit.name }}</h2>
+          <p>{{ habit.description }}</p>
+          <p>Logged: {{ habit.logCount }} time(s)</p>
+          <p>Progress: Level {{ habit.currentLevel }} of {{ habit.level }}
+            <span *ngIf="habit.currentLevel >= habit.level && habit.logCount > 0"> - Completed!</span>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+</ion-content>

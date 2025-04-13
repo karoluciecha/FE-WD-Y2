@@ -1,9 +1,15 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Edit Habit Details</ion-title>
+    <ion-buttons slot="end" style="margin-right: 1rem;">
+      <ion-button color="success" (click)="saveHabit()">
+        <ion-icon name="save-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button color="primary" (click)="saveHabit()">Save</ion-button>
-      <ion-button color="danger" (click)="deleteHabit()">Delete</ion-button>
+      <ion-button color="danger" (click)="deleteHabit()" style="margin-right: 1rem;">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
