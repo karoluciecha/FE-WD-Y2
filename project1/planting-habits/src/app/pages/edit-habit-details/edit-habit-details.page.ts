@@ -5,10 +5,10 @@ import { IonicModule } from '@ionic/angular';
 import { StorageService } from 'src/app/services/storage.service';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { ThemeService } from 'src/app/services/theme.service';
+import { HabitService } from 'src/app/services/habit.service';
 // Needed for editind existing habit details (passing id in route)
 import { ActivatedRoute } from '@angular/router';
-// Needed for generating unique ID
-import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-edit-habit-details',
@@ -48,9 +48,16 @@ export class EditHabitDetailsPage implements OnInit {
     'Every year'
   ];
 
-  constructor(private route: ActivatedRoute, private storageService: StorageService, private toastController: ToastController, private router: Router) { }
+  constructor(private route: ActivatedRoute,
+    private storageService: StorageService,
+    private toastController: ToastController,
+    private router: Router,
+    private themeService: ThemeService,
+    private habitService: HabitService
+  ) { }
 
   async ngOnInit() {
+    this.themeService.applyStoredTheme();
     await this.storageService.ready();
   
     const username = await this.storageService.getUsername();
@@ -84,121 +91,55 @@ export class EditHabitDetailsPage implements OnInit {
       }
     }
   }
-  
 
   async saveHabit() {
     const username = await this.storageService.getUsername();
     if (!username) {
-      const toast = await this.toastController.create({
-        message: 'You must be logged in to perform this action',
-        duration: 2000,
-        position: 'bottom',
-        color: 'danger'
-      });
-      await toast.present();
+      await this.showToast('You must be logged in to perform this action', 'danger');
       return;
     }
   
     if (!this.habitName.trim() || !this.frequency.trim()) {
-      const toast = await this.toastController.create({
-        message: 'Please fill out both Habit Name and Frequency before saving',
-        duration: 2000,
-        position: 'bottom',
-        color: 'warning'
-      });
-      await toast.present();
+      await this.showToast('Please fill out both Habit Name and Frequency before saving', 'warning');
       return;
     }
-
-    const key = `habits_${username}`;
-    let storedHabits: any[] = (await this.storageService.get(key)) || [];
   
-    const goalMap = [1, 5, 10, 25, 50, 69, 100, 250, 500, 1000];
-    const goalCount = goalMap[this.level - 1];
-
-    if (this.habitId) {
-      // Editing existing habit — update it
-      const index = storedHabits.findIndex(h => String(h.id) === String(this.habitId));
-      if (index !== -1) {
-        storedHabits[index] = {
-          ...storedHabits[index],
-          name: this.habitName,
-          description: this.habitDescription,
-          frequency: this.frequency,
-          level: this.level,
-          goalCount,
-          startDate: this.startDate,
-          active: true
-        };
-      }
-    } else {
-      // Creating new habit — generate a unique ID
-      const newHabit = {
-        id: uuidv4(),
-        name: this.habitName,
-        description: this.habitDescription,
-        frequency: this.frequency,
-        level: this.level,
-        goalCount,
-        startDate: this.startDate,
-        logCount: 0,
-        currentLevel: 0,
-        lastLogged: null,
-        active: true
-      };
-      storedHabits.push(newHabit);
-    }
+    const habitData = {
+      id: this.habitId,
+      name: this.habitName,
+      description: this.habitDescription,
+      frequency: this.frequency,
+      level: this.level,
+      startDate: this.startDate
+    };
   
-    await this.storageService.set(key, storedHabits);
-  
-    const toast = await this.toastController.create({
-      message: 'Habit saved successfully',
-      duration: 2000,
-      position: 'bottom'
-    });
-    await toast.present();
-  
+    await this.habitService.saveHabit(username, habitData, this.habitId);
+    await this.showToast('Habit saved successfully');
     this.router.navigate(['/edit-habit-all']);
   }
-  
+
   async deleteHabit() {
     const username = await this.storageService.getUsername();
     if (!username) {
-      const toast = await this.toastController.create({
-        message: 'You must be logged in to perform this action',
-        duration: 2000,
-        position: 'bottom',
-        color: 'danger'
-      });
-      await toast.present();
+      await this.showToast('You must be logged in to perform this action', 'danger');
       return;
-    }    
-  
-    const key = `habits_${username}`;
-    let storedHabits: any[] = (await this.storageService.get(key)) || [];
-  
-    if (storedHabits.some(h => String(h.id) === String(this.habitId))) {
-      // Delete existing habit by ID
-      storedHabits = storedHabits.filter(habit => habit.id !== this.habitId);
-      await this.storageService.set(key, storedHabits);
-  
-      const toast = await this.toastController.create({
-        message: 'Habit deleted successfully',
-        duration: 2000,
-        position: 'bottom'
-      });
-      await toast.present();
-    } else {
-      // Just clear the form if habit wasn't saved yet
-      const toast = await this.toastController.create({
-        message: 'New habit discarded',
-        duration: 2000,
-        position: 'bottom'
-      });
-      await toast.present();
     }
   
-    // Navigate back
+    const deleted = await this.habitService.deleteHabit(username, this.habitId);
+    const message = deleted ? 'Habit deleted successfully' : 'New habit discarded';
+  
+    await this.showToast(message);
     this.router.navigate(['/edit-habit-all']);
   }
+  
+
+  private async showToast(message: string, color: string = 'success') {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      position: 'bottom',
+      color
+    });
+    await toast.present();
+  }  
 }

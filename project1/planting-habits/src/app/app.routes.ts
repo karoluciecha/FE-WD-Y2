@@ -25,5 +25,9 @@ export const routes: Routes = [
     path: 'track-habit-all',
     loadComponent: () => import('./pages/track-habit-all/track-habit-all.page').then( m => m.TrackHabitAllPage)
   },
+  {
+    path: 'calendar-view',
+    loadComponent: () => import('./pages/calendar-view/calendar-view.page').then( m => m.CalendarViewPage)
+  },
 
 ];

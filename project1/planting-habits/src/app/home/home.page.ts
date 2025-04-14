@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { QuoteService } from '../services/quote.service';
 import { FormsModule } from '@angular/forms';
 import { StorageService } from '../services/storage.service';
+import { ThemeService } from '../services/theme.service';
 
 @Component({
   standalone: true,
@@ -30,18 +31,18 @@ export class HomePage implements OnInit, OnDestroy {
     private quoteService: QuoteService,
     private toast: ToastController,
     private renderer: Renderer2,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private themeService: ThemeService,
   ) {}
 
   async ngOnInit() {
+    this.themeService.applyStoredTheme();
     await this.storageService.ready();
   
     this.username = await this.storageService.getUsername();
     this.isLoggedIn = await this.storageService.isLoggedIn();
     this.isDarkMode = await this.storageService.getThemePreference();
-  
-    this.applyTheme(this.isDarkMode);
-  
+    
     this.loadQuote();
     this.quoteInterval = setInterval(() => this.loadQuote(), 30000);
   }
@@ -97,20 +98,13 @@ export class HomePage implements OnInit, OnDestroy {
     await this.storageService.setLoggedIn(false);
   }
 
-    private applyTheme(isDark: boolean) {
-      this.isDarkMode = isDark;
-      this.paletteToggle = isDark;
+  async toggleTheme(event: CustomEvent<{ checked: boolean }>) {
+    const isDark = event.detail.checked;
+    this.isDarkMode = isDark;
+    this.paletteToggle = isDark;
+    await this.themeService.toggleTheme(isDark);
+  }
     
-      document.body.classList.toggle('dark', isDark);
-      document.documentElement.classList.toggle('ion-palette-dark', isDark);
-    }
-
-    async toggleTheme(event: CustomEvent<{ checked: boolean }>) {
-      const isDark = event.detail.checked;
-      this.applyTheme(isDark);
-      await this.storageService.setThemePreference(isDark);
-    }
-
   async showToast(message: string) {
     const toast = await this.toast.create({
       message,

@@ -42,7 +42,7 @@
         <p>Level: {{ habit.currentLevel || 0 }} of {{ habit.level }}
           <span *ngIf="habit.currentLevel >= habit.level && habit.logCount > 0"> - Completed!</span>
         </p>
-        <p *ngIf="habit.currentLevel < habit.level">Next Due: {{ getNextDueDate(habit) }}</p>
+        <p *ngIf="getNextDueDate(habit) != ''">Next Due: {{ getNextDueDate(habit) }}</p>
       </ion-label>      
     </ion-item>
   </ion-list>

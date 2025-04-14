@@ -15,7 +15,7 @@ import { provideServiceWorker } from '@angular/service-worker';
 
 // Import the necessary icons from Ionicons
 import { addIcons } from 'ionicons';
-import { addOutline, settingsOutline, saveOutline, trashOutline } from 'ionicons/icons';
+import { addOutline, settingsOutline, saveOutline, trashOutline, sparklesOutline } from 'ionicons/icons';
 
 // Register only the icons needed
 addIcons({
@@ -23,6 +23,7 @@ addIcons({
   'settings-outline': settingsOutline,
   'save-outline': saveOutline,
   'trash-outline': trashOutline,
+  'sparkles-outline': sparklesOutline,
 });
 
 bootstrapApplication(AppComponent, {
