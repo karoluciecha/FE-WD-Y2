@@ -29,5 +29,9 @@ export const routes: Routes = [
     path: 'calendar-view',
     loadComponent: () => import('./pages/calendar-view/calendar-view.page').then( m => m.CalendarViewPage)
   },
+  {
+    path: 'hall-of-fame',
+    loadComponent: () => import('./pages/hall-of-fame/hall-of-fame.page').then( m => m.HallOfFamePage)
+  },
 
 ];

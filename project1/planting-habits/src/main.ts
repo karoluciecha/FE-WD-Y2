@@ -36,7 +36,10 @@ bootstrapApplication(AppComponent, {
       registrationStrategy: 'registerWhenStable:30000'
     }),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(),
+    provideIonicAngular({
+      // Allows to render HTML elements in the app (hall of game alert formatting)
+        innerHTMLTemplatesEnabled: true
+      }),
     provideRouter(routes, withPreloading(PreloadAllModules)),
   ],
 });

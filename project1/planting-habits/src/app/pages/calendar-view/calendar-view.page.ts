@@ -18,35 +18,38 @@ import { ThemeService } from 'src/app/services/theme.service';
   imports: [CommonModule, IonicModule, RouterModule, FullCalendarModule]
 })
 export class CalendarViewPage implements OnInit {
+  
+  // FullCalendar config object
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
-    events: [],
+    events: [], // dynamically populated in ngOnInit
   };
 
-  selectedDate = new Date().toISOString().split('T')[0];
-  selectedHabits: any[] = [];
-
-  private allEvents: EventInput[] = [];
+  selectedDate = new Date().toISOString().split('T')[0]; // Default: today
+  selectedHabits: any[] = []; // Habits scheduled for selected date
 
   constructor(private storageService: StorageService, private habitService: HabitService, private themeService: ThemeService) {}
 
   async ngOnInit() {
+    // Apply saved theme (light or dark)
     await this.themeService.applyStoredTheme();
 
     const username = await this.storageService.getUsername();
     const habits = await this.storageService.get(`habits_${username}`) || [];
 
+    // Generate all habit events using the service
     const allEvents = habits.flatMap((habit: any) =>
       this.habitService.getScheduledOccurrenceDates(habit).map((date, index) => ({
         title: habit.name,
         date,
         extendedProps: {
           habit,
-          occurrence: index + 1
+          occurrence: index + 1 // For displaying the n-th expected log
         }
       }))
     );
+    // Initialize calendar with generated events and interaction handlers
     this.calendarOptions = {
       initialView: 'dayGridMonth',
       plugins: [dayGridPlugin, interactionPlugin],
@@ -54,27 +57,28 @@ export class CalendarViewPage implements OnInit {
       selectable: true,
       dateClick: (info) => {
         const clickedDate = info.dateStr;
-        this.updateSelectedHabits(clickedDate, allEvents);
+        this.updateSelectedHabits(clickedDate, allEvents); // Handle date square click
       },
       eventClick: (info) => {
         const clickedDate = info.event.startStr;
-        this.updateSelectedHabits(clickedDate, allEvents);
+        this.updateSelectedHabits(clickedDate, allEvents); // Handle event dot click
       }
     };
     
-        // Preload today's habits
-        const today = new Date().toISOString().split('T')[0];
-        this.updateSelectedHabits(today, allEvents);
-      }
+  // Show today's habits by default on first load
+  const today = new Date().toISOString().split('T')[0];
+      this.updateSelectedHabits(today, allEvents);
+  }
     
-      updateSelectedHabits(dateStr: string, events: any[]) {
-        this.selectedDate = dateStr;
-        this.selectedHabits = events
-          .filter(e => e.date === dateStr)
-          .map(e => ({
-            ...e.extendedProps.habit,
-            occurrence: e.extendedProps.occurrence,
-            goalCount: e.extendedProps.habit.goalCount
-          }));
-      }
+  // Update habit list below calendar when date is clicked
+  updateSelectedHabits(dateStr: string, events: any[]) {
+    this.selectedDate = dateStr;
+    this.selectedHabits = events
+    .filter(e => e.date === dateStr)
+    .map(e => ({
+      ...e.extendedProps.habit,
+      occurrence: e.extendedProps.occurrence,
+      goalCount: e.extendedProps.habit.goalCount
+    }));
+  }
 }

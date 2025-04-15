@@ -18,11 +18,13 @@
     </ion-toolbar>
   </ion-header>
 
+  <!-- Greeting Based on Login Status -->
   <h1 style="text-align: center;">
     {{ username ? 'Hello, ' + username + '!' : 'Welcome to Planting Habits!' }}
   </h1>
   <hr>
 
+  <!-- Daily Quote Display -->
   <div
   style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto; padding: 0 2rem; max-width: 800px; min-height: 80px;">
   <blockquote style="font-style: italic; margin: 0;">
@@ -33,7 +35,7 @@
   <hr>
 
   <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-  <!-- Main container toggle -->
+  <!-- Toggle View: Settings vs Main Menu -->
   <ng-container *ngIf="showSettings; else mainMenu">
     <!-- Settings View -->
     <ion-card style="width: 100%; max-width: 500px; height: 350px; display: flex; flex-direction: column;">
@@ -41,7 +43,6 @@
         <ion-card-title style="text-align: center;">Settings</ion-card-title>
       </ion-card-header>
       <ion-card-content style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-        <!-- Top part -->
         <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;">
           <p>
             <ng-container *ngIf="!isLoggedIn">
@@ -66,7 +67,6 @@
             <ion-button color="danger" style="margin-top: 1rem;" (click)="logout()">Log Out</ion-button>
           </div>
         </div>
-        <!-- Bottom part: Dark mode toggle + Back button -->
         <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; padding-top: 1rem;">
           <div style="display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0;">
             <ion-label>Dark Mode</ion-label>
@@ -75,12 +75,17 @@
           <ion-button fill="outline" (click)="showSettings = false">
             Back
           </ion-button>
+            <!-- Debug Info using Capacitor Plugin -->
+            <p style="text-align: center;">
+            <strong>Debug Info</strong><br>
+            Platform: {{ platformInfo }}
+          </p>          
         </div>
       </ion-card-content>
     </ion-card>
   </ng-container>
 
-  <!-- RouterLinks Menu -->
+  <!-- Main Menu Buttons -->
   <ng-template #mainMenu>
     <ion-card style="width: 100%; max-width: 500px; height: 350px; display: flex; flex-direction: column;">
       <ion-card-header>
@@ -89,9 +94,9 @@
       <ion-card-content style="flex: 1; display: flex; justify-content: center;">
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem;">
           <ion-button [routerLink]="['/track-habit-all']" [disabled]="!isLoggedIn">Track Now</ion-button>
-          <ion-button [routerLink]="['/garden-view']" [disabled]="!isLoggedIn">Garden View</ion-button>
-          <ion-button [routerLink]="['/calendar-view']" [disabled]="!isLoggedIn">Calendar View</ion-button>
-          <ion-button [routerLink]="['/edit-habit-all']" [disabled]="!isLoggedIn">Edit Habits</ion-button>
+          <ion-button [routerLink]="['/hall-of-fame']" [disabled]="!isLoggedIn">Hall of Fame</ion-button>
+          <ion-button [routerLink]="['/calendar-view']" [disabled]="!isLoggedIn">Calendar</ion-button>
+          <ion-button [routerLink]="['/edit-habit-all']" [disabled]="!isLoggedIn">Change Habits</ion-button>
           <!-- <ion-button (click)="showSettings = true">Settings</ion-button> -->
         </div>
       </ion-card-content>

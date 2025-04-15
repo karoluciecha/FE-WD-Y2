@@ -7,6 +7,7 @@ export class HabitService {
 
   constructor(private storage: StorageService) {}
 
+  // Calculates the current level of a habit.
   getCurrentLevel(logCount: number): number {
     const index = LEVEL_THRESHOLDS.findIndex(t => logCount < t);
     return Math.max(0, index - 1);
@@ -31,7 +32,7 @@ export class HabitService {
     }
   }
 
-  // Callenda view function to get the dates of habit occurrences based on its frequency and start date.
+  // Callendr view function to get the dates of habit occurrences based on its frequency and start date.
   getAdjustedOccurrenceDates(habit: any): string[] {
     const interval = FREQUENCY_INTERVALS[habit.frequency];
     if (!interval) return [];
@@ -47,6 +48,7 @@ export class HabitService {
     });
   }
 
+  // Returns the occurrence dates for a habit based on its frequency and start date.
   getScheduledOccurrenceDates(habit: any): string[] {
     const interval = FREQUENCY_INTERVALS[habit.frequency];
     if (!interval) return [];
@@ -150,4 +152,10 @@ async logHabitToday(habit: any, username: string): Promise<void> {
     await this.storage.set(key, allHabits);
   }
 }
+
+// Function to get the next level threshold for a habit.
+getNextLevelThreshold(currentLevel: number): number {
+  return LEVEL_THRESHOLDS[currentLevel + 1] ?? LEVEL_THRESHOLDS[LEVEL_THRESHOLDS.length - 1];
+}
+
 }

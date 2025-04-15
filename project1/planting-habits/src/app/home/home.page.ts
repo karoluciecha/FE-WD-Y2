@@ -6,6 +6,7 @@ import { QuoteService } from '../services/quote.service';
 import { FormsModule } from '@angular/forms';
 import { StorageService } from '../services/storage.service';
 import { ThemeService } from '../services/theme.service';
+import { Device } from '@capacitor/device';
 
 @Component({
   standalone: true,
@@ -14,7 +15,6 @@ import { ThemeService } from '../services/theme.service';
   styleUrls: ['./home.page.scss'],
   imports: [CommonModule, IonicModule, RouterModule, FormsModule]
 })
-
 export class HomePage implements OnInit, OnDestroy {
   username = '';
   isLoggedIn = false;
@@ -23,7 +23,7 @@ export class HomePage implements OnInit, OnDestroy {
   inputName = '';
   isDarkMode = true;
   paletteToggle = false;
-
+  platformInfo: string = '';
 
   private quoteInterval: any;
 
@@ -36,18 +36,28 @@ export class HomePage implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
+    // Apply user's previously selected theme
     this.themeService.applyStoredTheme();
+
+    // Wait for storage to initialize
     await this.storageService.ready();
-  
+
+    // Restore user login state and theme preference from storage
     this.username = await this.storageService.getUsername();
     this.isLoggedIn = await this.storageService.isLoggedIn();
     this.isDarkMode = await this.storageService.getThemePreference();
-    
+
+    // Retrieve device / platform info using Capacitor
+    const info = await Device.getInfo();
+    this.platformInfo = `${info.platform} - ${info.model || info.operatingSystem || ''}`;
+
+    // Load the first quote and set up auto-refresh every 30 seconds
     this.loadQuote();
     this.quoteInterval = setInterval(() => this.loadQuote(), 30000);
   }
 
   ngOnDestroy() {
+    // Clean up the interval to prevent memory leaks
     if (this.quoteInterval) {
       clearInterval(this.quoteInterval);
       this.quoteInterval = null;
@@ -61,15 +71,15 @@ export class HomePage implements OnInit, OnDestroy {
           this.quote = 'No quotes available.';
           return;
         }
-  
+
         const randomIndex = Math.floor(Math.random() * data.length);
         const quotePost = data[randomIndex];
-  
-        // Remove HTML tags from content
+
+        // Strip any HTML tags from the quote content for clean display
         const tempDiv = this.renderer.createElement('div');
         tempDiv.innerHTML = quotePost.content.rendered;
         const cleanedContent = tempDiv.textContent || tempDiv.innerText || '';
-  
+
         this.quote = `"${cleanedContent.trim()}" - ${quotePost.title.rendered}`;
       },
       error: () => {
@@ -80,20 +90,21 @@ export class HomePage implements OnInit, OnDestroy {
 
   async login() {
     if (this.inputName.trim()) {
+      // Save login data locally
       this.username = this.inputName.trim();
       this.isLoggedIn = true;
       this.inputName = '';
-  
-      // Save to storage
+
       await this.storageService.setUsername(this.username);
       await this.storageService.setLoggedIn(true);
     }
   }
 
   async logout() {
+    // Reset login state and clear data from storage
     this.isLoggedIn = false;
     this.username = '';
-  
+
     await this.storageService.removeUsername();
     await this.storageService.setLoggedIn(false);
   }
@@ -102,9 +113,11 @@ export class HomePage implements OnInit, OnDestroy {
     const isDark = event.detail.checked;
     this.isDarkMode = isDark;
     this.paletteToggle = isDark;
+
+    // Use ThemeService to persist theme preference and apply changes
     await this.themeService.toggleTheme(isDark);
   }
-    
+
   async showToast(message: string) {
     const toast = await this.toast.create({
       message,
