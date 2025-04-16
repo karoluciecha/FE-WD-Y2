@@ -1,0 +1,42 @@
+<!-- Page header with back button and title -->
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button routerLink="/" defaultHref="/" routerDirection="root"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Habit Calendar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Calendar display container -->
+  <div class="full-calendar-container">
+    <full-calendar [options]="calendarOptions"></full-calendar>
+  </div>
+
+  <!-- Show habit list when habits are due on selected date -->
+  <div class="habit-list" *ngIf="selectedHabits.length > 0">
+    <h3>Habits due on {{ selectedDate }}:</h3>
+    <ion-list>
+      <ion-item *ngFor="let habit of selectedHabits; let i = index">
+      <!-- Number on the left -->
+      <div slot="start" class="habit-number">
+        {{ i + 1 }}
+      </div>
+        <!-- Show habit details -->
+        <ion-label>
+          <h2>{{ habit.name }}</h2>
+          <p>{{ habit.description }}</p>
+          <p>Expected log occurrence: {{ habit.occurrence }} of {{ habit.goalCount }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- If no habits are due on selected date -->
+  <div class="habit-list" *ngIf="selectedHabits.length === 0" style="text-align: center;">
+    <h3>No habits due on {{ selectedDate }}</h3>
+    <br>
+    <ion-icon name="sparkles-outline" size="large"></ion-icon>
+  </div>
+  </ion-content>

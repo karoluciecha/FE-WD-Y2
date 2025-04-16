@@ -1,0 +1,25 @@
+.achievement-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0;
+  }
+  
+  ion-card {
+    width: 40%;
+    max-width: 250px;
+    text-align: center;
+    transition: transform 0.2s ease;
+    border-radius: 12px;
+    overflow: hidden;
+  
+    &:hover {
+      transform: scale(1.03);
+    }
+  }
+  
+  .completed-habit {
+    background: linear-gradient(to bottom right, sandybrown, gold, goldenrod, orange);
+    color: #000000;
+  }

@@ -1,0 +1,49 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button routerLink="/" defaultHref="/" routerDirection="root"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Current Habits</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onAddHabit()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Display message if no habits exist -->
+  <div *ngIf="habits.length === 0" style="text-align: center; margin-top: 4rem; color: var(--ion-color-medium);">
+    <p>You don't have any current habits :(</p>
+    <p>Try adding some now!</p>
+  </div>
+
+  <!-- Display list of habits if available -->
+  <ion-list *ngIf="habits.length > 0" style="border-radius: 5px;">
+    <ion-item
+      *ngFor="let habit of habits; let i = index"
+      [routerLink]="['/edit-habit-details', habit.id]"
+      [ngClass]="{ 'inactive-habit': !habit.active }"
+      class="habit-item"
+      detail
+          >
+      <!-- Number on the left -->
+      <div slot="start" class="habit-number">
+        {{ i + 1 }}
+      </div>
+  
+      <!-- Habit details section -->
+      <ion-label>
+        <h2>{{ habit.name }}</h2>
+        <p>{{ habit.description }}</p>
+        <p>Logged: {{ habit.logCount || 0 }} time(s)</p>
+        <p>Level: {{ habit.currentLevel || 0 }} of {{ habit.level }}
+          <span *ngIf="habit.currentLevel >= habit.level && habit.logCount > 0"> - Completed!</span>
+        </p>
+        <p *ngIf="getNextDueDate(habit) != ''">Next Due: {{ getNextDueDate(habit) }}</p>
+      </ion-label>      
+    </ion-item>
+  </ion-list>
+</ion-content>

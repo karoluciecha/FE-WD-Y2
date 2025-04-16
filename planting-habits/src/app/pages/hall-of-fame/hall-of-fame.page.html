@@ -1,0 +1,26 @@
+<!-- Page header with back button and title -->
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button routerLink="/" defaultHref="/" routerDirection="root"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Achievements</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Container for displaying achievement cards -->
+  <div class="achievement-grid">
+    <!-- Loop through all habits and display them as achievement cards -->
+    <ion-card *ngFor="let habit of habits" (click)="showHabitDetails(habit)"
+      [ngClass]="{ 'completed-habit': isCompleted(habit) }">
+      <ion-card-content>
+        <h2 style="text-transform: uppercase;">{{ habit.name }}</h2>
+      </ion-card-content>
+      <img [src]="getEmblemImage(habit.currentLevel)" alt="Habit Emblem" />
+      <ion-card-content>
+        <p style="text-transform: uppercase;">Level {{ habit.currentLevel }} of {{ habit.level }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
